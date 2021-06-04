@@ -5,7 +5,7 @@ import (
 
 	p4_v1 "github.com/p4lang/p4runtime/go/p4/v1"
 
-	"github.com/antoninbas/p4runtime-go-client/pkg/util/conversion"
+	"github.com/eth0xFEED/p4runtime-go-client/pkg/util/conversion"
 )
 
 func ToCanonicalIf(v []byte, cond bool) []byte {

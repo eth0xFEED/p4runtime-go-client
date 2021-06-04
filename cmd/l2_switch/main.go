@@ -14,9 +14,9 @@ import (
 
 	p4_v1 "github.com/p4lang/p4runtime/go/p4/v1"
 
-	"github.com/antoninbas/p4runtime-go-client/pkg/client"
-	"github.com/antoninbas/p4runtime-go-client/pkg/signals"
-	"github.com/antoninbas/p4runtime-go-client/pkg/util/conversion"
+	"github.com/eth0xFEED/p4runtime-go-client/pkg/client"
+	"github.com/eth0xFEED/p4runtime-go-client/pkg/signals"
+	"github.com/eth0xFEED/p4runtime-go-client/pkg/util/conversion"
 )
 
 const (
