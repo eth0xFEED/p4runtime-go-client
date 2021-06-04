@@ -58,3 +58,23 @@ func (c *Client) DeleteMulticastGroup(mgid uint32) error {
 
 	return c.WriteUpdate(update)
 }
+
+func (c *Client) ReadMulticastGroup(mgid uint32) (*p4_v1.Entity, error) {
+	entry := &p4_v1.MulticastGroupEntry{
+		MulticastGroupId: mgid,
+	}
+
+	preEntry := &p4_v1.PacketReplicationEngineEntry{
+		Type: &p4_v1.PacketReplicationEngineEntry_MulticastGroupEntry{
+			MulticastGroupEntry: entry,
+		},
+	}
+
+	entity := &p4_v1.Entity{
+		Entity: &p4_v1.Entity_PacketReplicationEngineEntry{
+			PacketReplicationEngineEntry: preEntry,
+		},
+	}
+
+	return c.ReadEntitySingle(entity)
+}
