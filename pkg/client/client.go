@@ -33,7 +33,7 @@ type Client struct {
 	p4_v1.P4RuntimeClient
 	deviceID     uint64
 	electionID   p4_v1.Uint128
-	p4Info       *p4_config_v1.P4Info
+	Xp4info      *p4_config_v1.P4Info
 	streamSendCh chan *p4_v1.StreamMessageRequest
 }
 
