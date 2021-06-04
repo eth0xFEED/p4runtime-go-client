@@ -7,10 +7,10 @@ import (
 const invalidID = 0
 
 func (c *Client) tableId(name string) uint32 {
-	if c.p4Info == nil {
+	if c.Xp4info == nil {
 		return invalidID
 	}
-	for _, table := range c.p4Info.Tables {
+	for _, table := range c.Xp4info.Tables {
 		if table.Preamble.Name == name {
 			return table.Preamble.Id
 		}
@@ -19,10 +19,10 @@ func (c *Client) tableId(name string) uint32 {
 }
 
 func (c *Client) actionId(name string) uint32 {
-	if c.p4Info == nil {
+	if c.Xp4info == nil {
 		return invalidID
 	}
-	for _, action := range c.p4Info.Actions {
+	for _, action := range c.Xp4info.Actions {
 		if action.Preamble.Name == name {
 			return action.Preamble.Id
 		}
@@ -31,10 +31,10 @@ func (c *Client) actionId(name string) uint32 {
 }
 
 func (c *Client) digestId(name string) uint32 {
-	if c.p4Info == nil {
+	if c.Xp4info == nil {
 		return invalidID
 	}
-	for _, digest := range c.p4Info.Digests {
+	for _, digest := range c.Xp4info.Digests {
 		if digest.Preamble.Name == name {
 			return digest.Preamble.Id
 		}
@@ -43,10 +43,10 @@ func (c *Client) digestId(name string) uint32 {
 }
 
 func (c *Client) findCounter(name string) *p4_config_v1.Counter {
-	if c.p4Info == nil {
+	if c.Xp4info == nil {
 		return nil
 	}
-	for _, counter := range c.p4Info.Counters {
+	for _, counter := range c.Xp4info.Counters {
 		if counter.Preamble.Name == name {
 			return counter
 		}

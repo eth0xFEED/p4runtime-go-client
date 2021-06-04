@@ -235,8 +235,8 @@ func main() {
 	flag.BoolVar(&verbose, "verbose", false, "Enable verbose mode with debug log messages")
 	var binPath string
 	flag.StringVar(&binPath, "bin", "", "Path to P4 bin (not needed for bmv2 simple_switch_grpc)")
-	var p4infoPath string
-	flag.StringVar(&p4infoPath, "p4info", "", "Path to P4Info (not needed for bmv2 simple_switch_grpc)")
+	var Xp4infoPath string
+	flag.StringVar(&Xp4infoPath, "Xp4info", "", "Path to Xp4info (not needed for bmv2 simple_switch_grpc)")
 	var switchPorts string
 	flag.StringVar(&switchPorts, "ports", defaultPorts, "List of switch ports - required for configuring multicast group for broadcast")
 
@@ -252,7 +252,7 @@ func main() {
 	}
 
 	binBytes := MustAsset("cmd/l2_switch/l2_switch.out/l2_switch.json")
-	p4infoBytes := MustAsset("cmd/l2_switch/l2_switch.out/p4info.pb.txt")
+	Xp4infoBytes := MustAsset("cmd/l2_switch/l2_switch.out/Xp4info.pb.txt")
 
 	if binPath != "" {
 		var err error
@@ -261,10 +261,10 @@ func main() {
 		}
 	}
 
-	if p4infoPath != "" {
+	if Xp4infoPath != "" {
 		var err error
-		if p4infoBytes, err = ioutil.ReadFile(p4infoPath); err != nil {
-			log.Fatalf("Error when reading P4Info text file '%s': %v", p4infoPath, err)
+		if Xp4infoBytes, err = ioutil.ReadFile(Xp4infoPath); err != nil {
+			log.Fatalf("Error when reading Xp4info text file '%s': %v", Xp4infoPath, err)
 		}
 	}
 
@@ -322,7 +322,7 @@ func main() {
 	}
 
 	log.Info("Setting forwarding pipe")
-	if _, err := p4RtC.SetFwdPipeFromBytes(binBytes, p4infoBytes, 0); err != nil {
+	if _, err := p4RtC.SetFwdPipeFromBytes(binBytes, Xp4infoBytes, 0); err != nil {
 		log.Fatalf("Error when setting forwarding pipe: %v", err)
 	}
 

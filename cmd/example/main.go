@@ -30,13 +30,13 @@ func main() {
 	flag.Uint64Var(&deviceID, "device-id", defaultDeviceID, "Device id")
 	var binPath string
 	flag.StringVar(&binPath, "bin", "", "Path to P4 bin")
-	var p4infoPath string
-	flag.StringVar(&p4infoPath, "p4info", "", "Path to P4Info")
+	var Xp4infoPath string
+	flag.StringVar(&Xp4infoPath, "Xp4info", "", "Path to Xp4info")
 
 	flag.Parse()
 
-	if binPath == "" || p4infoPath == "" {
-		log.Fatalf("Missing .bin or P4Info")
+	if binPath == "" || Xp4infoPath == "" {
+		log.Fatalf("Missing .bin or Xp4info")
 	}
 
 	log.Infof("Connecting to server at %s", addr)
@@ -88,7 +88,7 @@ func main() {
 	}
 
 	log.Info("Setting forwarding pipe")
-	if _, err := p4RtC.SetFwdPipe(binPath, p4infoPath, 0); err != nil {
+	if _, err := p4RtC.SetFwdPipe(binPath, Xp4infoPath, 0); err != nil {
 		log.Fatalf("Error when setting forwarding pipe: %v", err)
 	}
 
