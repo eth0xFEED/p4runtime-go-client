@@ -234,6 +234,41 @@ func (c *Client) NewTableEntry(
 	return entry
 }
 
+func (c *Client) NewTableEntryWithMatchFields(
+	table string,
+	fieldNames []string,
+	mfs []MatchInterface,
+	action *p4_v1.TableAction,
+	options *TableEntryOptions,
+) *p4_v1.TableEntry {
+	tableID := c.tableId(table)
+
+	entry := &p4_v1.TableEntry{
+		TableId: tableID,
+		//nolint:staticcheck // SA5011 if mfs==nil then for loop is not executed by default
+		IsDefaultAction: (mfs == nil),
+		Action:          action,
+	}
+	for _, p4Table := range c.Xp4info.Tables {
+		if p4Table.Preamble.Name == table {
+			for _, match := range p4Table.MatchFields {
+				for idx, fieldName := range fieldNames {
+					if match.Name == fieldName {
+						mf := mfs[idx]
+						entry.Match = append(entry.Match, mf.get(match.Id, c.CanonicalBytestrings))
+					}
+				}
+			}
+		}
+	}
+
+	if options != nil {
+		entry.IdleTimeoutNs = options.IdleTimeout.Nanoseconds()
+	}
+
+	return entry
+}
+
 func (c *Client) InsertTableEntry(entry *p4_v1.TableEntry) error {
 	update := &p4_v1.Update{
 		Type: p4_v1.Update_INSERT,
