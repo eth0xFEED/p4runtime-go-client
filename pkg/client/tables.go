@@ -179,8 +179,23 @@ func (c *Client) NewActionProfileActionSet() *ActionProfileActionSet {
 		},
 	}
 }
-
 func (s *ActionProfileActionSet) AddAction(
+	action string,
+	params [][]byte,
+	weight int32,
+) *ActionProfileActionSet {
+	actionSet := s.action.GetActionProfileActionSet()
+	actionSet.ActionProfileActions = append(
+		actionSet.ActionProfileActions,
+		&p4_v1.ActionProfileAction{
+			Action: s.client.newAction(action, params),
+			Weight: weight,
+		},
+	)
+	return s
+}
+
+func (s *ActionProfileActionSet) AddActionWatchPort(
 	action string,
 	params [][]byte,
 	weight int32,
