@@ -219,6 +219,25 @@ func (s *ActionProfileActionSet) TableAction() *p4_v1.TableAction {
 	return s.action
 }
 
+func (c *Client) NewActionProfileMember(actionProfile, action string, memberId uint32, params [][]byte) *p4_v1.ActionProfileMember {
+	return &p4_v1.ActionProfileMember{
+		ActionProfileId: c.actionProfileId(actionProfile),
+		MemberId:        memberId,
+		Action:          c.newAction(action, params),
+	}
+}
+func (c *Client) NewActionProfileGroup(actionProfile string, groupId uint32, members []uint32) *p4_v1.ActionProfileGroup {
+	apMembers := make([]*p4_v1.ActionProfileGroup_Member, 0)
+	for _, member := range members {
+		apMembers = append(apMembers, &p4_v1.ActionProfileGroup_Member{MemberId: member})
+	}
+	return &p4_v1.ActionProfileGroup{
+		ActionProfileId: c.actionProfileId(actionProfile),
+		GroupId:         groupId,
+		Members:         apMembers,
+	}
+}
+
 // for default entries: to set use nil for mfs, to unset use nil for mfs and nil
 // for action
 func (c *Client) NewTableEntry(

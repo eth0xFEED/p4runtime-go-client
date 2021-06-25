@@ -18,6 +18,18 @@ func (c *Client) tableId(name string) uint32 {
 	return invalidID
 }
 
+func (c *Client) actionProfileId(name string) uint32 {
+	if c.Xp4info == nil {
+		return invalidID
+	}
+	for _, ap := range c.Xp4info.ActionProfiles {
+		if ap.Preamble.Name == name {
+			return ap.Preamble.Id
+		}
+	}
+	return invalidID
+
+}
 func (c *Client) actionId(name string) uint32 {
 	if c.Xp4info == nil {
 		return invalidID
