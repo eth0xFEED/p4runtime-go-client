@@ -335,3 +335,25 @@ func (c *Client) DeleteTableEntry(entry *p4_v1.TableEntry) error {
 
 	return c.WriteUpdate(update)
 }
+
+func (c *Client) DoActionProfileMemberEntry(opType p4_v1.Update_Type, entry *p4_v1.ActionProfileMember) error {
+	update := &p4_v1.Update{
+		Type: opType,
+		Entity: &p4_v1.Entity{
+			Entity: &p4_v1.Entity_ActionProfileMember{ActionProfileMember: entry},
+		},
+	}
+
+	return c.WriteUpdate(update)
+}
+
+func (c *Client) DoActionProfileGroupEntry(opType p4_v1.Update_Type, entry *p4_v1.ActionProfileGroup) error {
+	update := &p4_v1.Update{
+		Type: opType,
+		Entity: &p4_v1.Entity{
+			Entity: &p4_v1.Entity_ActionProfileGroup{ActionProfileGroup: entry},
+		},
+	}
+
+	return c.WriteUpdate(update)
+}
