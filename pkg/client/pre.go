@@ -11,7 +11,7 @@ func (c *Client) InsertMulticastGroup(mgid uint32, ports []uint32) error {
 	for idx, port := range ports {
 		replica := &p4_v1.Replica{
 			EgressPort: port,
-			Instance:   uint32(idx),
+			Instance:   uint32(idx + 1),
 		}
 		entry.Replicas = append(entry.Replicas, replica)
 	}
