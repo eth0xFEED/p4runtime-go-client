@@ -4,6 +4,26 @@ import (
 	p4_v1 "github.com/p4lang/p4runtime/go/p4/v1"
 )
 
+func (c *Client) InsertMulticastGroupEntry(mge *p4_v1.MulticastGroupEntry) error {
+
+	preEntry := &p4_v1.PacketReplicationEngineEntry{
+		Type: &p4_v1.PacketReplicationEngineEntry_MulticastGroupEntry{
+			MulticastGroupEntry: mge,
+		},
+	}
+
+	updateType := p4_v1.Update_INSERT
+	update := &p4_v1.Update{
+		Type: updateType,
+		Entity: &p4_v1.Entity{
+			Entity: &p4_v1.Entity_PacketReplicationEngineEntry{
+				PacketReplicationEngineEntry: preEntry,
+			},
+		},
+	}
+
+	return c.WriteUpdate(update)
+}
 func (c *Client) InsertMulticastGroup(mgid uint32, ports []uint32) error {
 	entry := &p4_v1.MulticastGroupEntry{
 		MulticastGroupId: mgid,
