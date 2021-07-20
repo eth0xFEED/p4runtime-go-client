@@ -73,3 +73,15 @@ func (c *Client) counterId(name string) uint32 {
 	}
 	return counter.Preamble.Id
 }
+
+func (c *Client) controllerPktMdId(name string) uint32 {
+	if c.Xp4info == nil {
+		return invalidID
+	}
+	for _, cpMd := range c.Xp4info.ControllerPacketMetadata {
+		if cpMd.Preamble.Name == name {
+			return cpMd.Preamble.Id
+		}
+	}
+	return invalidID
+}

@@ -31,10 +31,10 @@ func DisableCanonicalBytestrings(options *ClientOptions) {
 type Client struct {
 	ClientOptions
 	p4_v1.P4RuntimeClient
-	deviceID     uint64
-	electionID   p4_v1.Uint128
-	Xp4info      *p4_config_v1.P4Info
-	streamSendCh chan *p4_v1.StreamMessageRequest
+	deviceID      uint64
+	electionID    p4_v1.Uint128
+	Xp4info       *p4_config_v1.P4Info
+	XstreamSendCh chan *p4_v1.StreamMessageRequest
 }
 
 func NewClient(
@@ -52,7 +52,7 @@ func NewClient(
 		P4RuntimeClient: p4RuntimeClient,
 		deviceID:        deviceID,
 		electionID:      electionID,
-		streamSendCh:    make(chan *p4_v1.StreamMessageRequest, 1000), // TODO: should be configurable
+		XstreamSendCh:   make(chan *p4_v1.StreamMessageRequest, 1000), // TODO: should be configurable
 	}
 }
 
@@ -104,7 +104,7 @@ func (c *Client) Run(
 
 	for {
 		select {
-		case m := <-c.streamSendCh:
+		case m := <-c.XstreamSendCh:
 			stream.Send(m)
 		case <-stopCh:
 			return nil
@@ -180,5 +180,26 @@ func (c *Client) ReadEntityWildcard(entity *p4_v1.Entity, readEntityCh chan<- *p
 			readEntityCh <- e
 		}
 	}
+	return nil
+}
+
+func (c *Client) PacketOut(pkt []byte, md map[string][]byte) error {
+	mdVals := make([]*p4_v1.PacketMetadata, 0)
+	for k, v := range md {
+		mdVals = append(mdVals,
+			&p4_v1.PacketMetadata{
+				MetadataId: c.controllerPktMdId(k),
+				Value:      v,
+			})
+	}
+	m := &p4_v1.StreamMessageRequest{
+		Update: &p4_v1.StreamMessageRequest_Packet{
+			Packet: &p4_v1.PacketOut{
+				Payload:  pkt,
+				Metadata: mdVals,
+			},
+		},
+	}
+	c.XstreamSendCh <- m
 	return nil
 }

@@ -11,7 +11,7 @@ func (c *Client) AckDigestList(digestList *p4_v1.DigestList) error {
 			ListId:   digestList.ListId,
 		}},
 	}
-	c.streamSendCh <- m
+	c.XstreamSendCh <- m
 	return nil
 }
 
